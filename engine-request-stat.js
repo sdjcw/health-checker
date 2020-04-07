@@ -11,18 +11,32 @@ router.get('/engine-request-stat', (req, res) => {
 const requestWebService = async () => {
   const {
     LEANCLOUD_APP_DOMAIN: appDomain,
-    LEANCLOUD_REGION: region,
   } = process.env;
   await request({
-    // TODO 文档有坑: region 不是大写
-    url: `https://${appDomain}.${region == 'us' ? 'avosapps.us' : 'leanapp.cn'}/engine-request-stat`
+    url: `https://${appDomain}.${getRegion()}/engine-request-stat`
   });
+};
+
+const getRegion = () => {
+  const {
+    LEANCLOUD_REGION: region,
+    LEANCLOUD_API_SERVER: apiServer,
+  } = process.env;
+  if (region == 'US') {
+    return 'avosapps.us';
+  }
+  
+  if (apiServer == 'http://e1-api.leancloud.cn') {
+    return 'cn-e1.leanapp.cn';
+  }
+
+  return 'leanapp.cn';
 };
 
 const expectQps = 0.5;
 setInterval(() => {
   requestWebService();
-}, 1000 / 0.5);
+}, 1000 / expectQps);
 
 const check = async (lastCheckTime) => {
   const now = new Date();

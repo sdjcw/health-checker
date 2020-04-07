@@ -2,10 +2,10 @@ const assert = require('assert').strict;
 const lcDashboard = require('./lc-dashboard');
 
 const testLogContent = '这是测试云引擎日志功能的测试日志。';
-const testLogPrintInterval = 5000;
+const testLogPrintInterval = 30000;
 
 setInterval(() => {
-  console.log(testLogContent);
+  console.log(testLogContent, new Date().toISOString());
 }, testLogPrintInterval);
 
 const check = async (lastCheckTime) => {

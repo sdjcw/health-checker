@@ -8,9 +8,11 @@ const saveCheckResult = async ({checkItem, result, detail}) => {
         detail,
       });
   } catch (err) {
-    console.err(`Save check result err: save date: ${JSON.stringify(result, null, 2)}`, err);
+    console.error(`Save check result err: save date: ${JSON.stringify(result, null, 2)}`, err);
   }
 };
+
+console.log(process.env);
 
 const checkItems = [
   require('./engine-log'),
